@@ -1940,15 +1940,27 @@ function setAge() {
         }
 
         function submitCustomQuestion() {
-            const input = document.getElementById('customQuestionInput');
-            const question = input.value.trim();
-            
-            if (!question) {
-                alert('Please enter a question!');
-                return;
-                document.getElementById('customQuestionInput').value = '';
+            // 1. Get the value from the input field
+            const questionInput = document.getElementById('customQuestionInput');
+            const question = questionInput.value.trim();
+        
+            // 2. Check if the question is not empty
+            if (question === '') {
+                return; // Do nothing if the input is empty
             }
-            
+        
+            // 3. Add the user's question to the chat display
+            // This is where you would call your function to display the question
+            // Example: addMessageToChat('user', question);
+        
+            // 4. Clear the input field after the question is captured
+            questionInput.value = '';
+        
+            // 5. Send the question to your chatbot backend or process it
+            // This is where your API call or other submission logic goes
+            // Example: sendQuestionToAPI(question);
+        }
+                    
             addUserMessage(question);
             
             // Track the question for gamification
