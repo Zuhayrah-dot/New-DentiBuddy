@@ -848,6 +848,217 @@
             }
         }
 
+        /* Badge System */
+        .badge-container {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .badge-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .badge-header h3 {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+        }
+
+        .badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 5px;
+            border-radius: 10px;
+            background: var(--feature-bg);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .badge.earned {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border-color: #4facfe;
+            animation: badgeEarned 0.6s ease-out;
+        }
+
+        .badge.locked {
+            opacity: 0.4;
+            filter: grayscale(100%);
+        }
+
+        .badge:hover:not(.locked) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        @keyframes badgeEarned {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .badge-icon {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .badge-name {
+            font-size: 0.7rem;
+            text-align: center;
+            font-weight: 500;
+            line-height: 1.2;
+        }
+
+        .badge.earned .badge-name {
+            color: white;
+        }
+
+        .new-badge-notification {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff6b6b;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .progress-bar {
+            background: var(--feature-bg);
+            border-radius: 10px;
+            height: 8px;
+            margin: 10px 0;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .progress-fill {
+            background: var(--button-gradient);
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: inherit;
+        }
+
+        .level-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .level-badge {
+            background: var(--accent-gradient);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .xp-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .badge-toast {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 2px solid #4facfe;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 3000;
+            display: none;
+            animation: slideInRight 0.5s ease-out;
+            backdrop-filter: blur(20px);
+            max-width: 300px;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .toast-icon {
+            font-size: 2rem;
+            background: var(--button-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .toast-text {
+            flex: 1;
+        }
+
+        .toast-title {
+            font-weight: bold;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .toast-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .nav-links {
@@ -941,7 +1152,7 @@
             <div class="hero-buttons">
                 <button class="cta-primary" onclick="openChat()">
                     🚀 Start Learning Now
-                
+                </button>
             </div>
         </div>
     </section>
@@ -1088,6 +1299,24 @@
             </div>
             
             <div class="chat-messages" id="chatMessages">
+                <!-- Badge Container -->
+                <div class="badge-container" id="badgeContainer" style="display: none;">
+                    <div class="badge-header">
+                        <span>🏆</span>
+                        <h3>Your Achievements</h3>
+                    </div>
+                    <div class="level-indicator">
+                        <div class="level-badge" id="levelBadge">Level 1</div>
+                        <div class="xp-text" id="xpText">0 / 100 XP</div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                    <div class="badges-grid" id="badgesGrid">
+                        <!-- Badges will be dynamically added here -->
+                    </div>
+                </div>
+
                 <div class="message">
                     <div class="bot-message">
                         Hey there! 👋 I'm DentiBuddy, your friendly oral health assistant! I'm here to help you learn about taking care of your teeth and gums in a fun way!
@@ -1109,11 +1338,264 @@
         </div>
     </div>
 
+    <!-- Badge Achievement Toast -->
+    <div class="badge-toast" id="badgeToast">
+        <div class="toast-content">
+            <div class="toast-icon" id="toastIcon">🏆</div>
+            <div class="toast-text">
+                <div class="toast-title" id="toastTitle">Achievement Unlocked!</div>
+                <div class="toast-description" id="toastDescription">First Steps completed</div>
+            </div>
+        </div>
+    </div>
+
     <script>
         let userAge = null;
         let currentStep = 'age';
         let currentTheme = 'light';
         let currentLanguage = 'en';
+        
+        // Gamification System
+        let userStats = {
+            xp: 0,
+            level: 1,
+            badges: new Set(),
+            questionsAsked: 0,
+            topicsExplored: new Set(),
+            chatSessions: 0,
+            streakDays: 1
+        };
+
+        // Badge definitions
+        const badges = {
+            firstSteps: {
+                id: 'firstSteps',
+                icon: '👶',
+                name: 'First Steps',
+                description: 'Started your dental health journey',
+                xpReward: 50,
+                condition: () => userStats.questionsAsked >= 1
+            },
+            curious: {
+                id: 'curious',
+                icon: '🤔',
+                name: 'Curious Mind',
+                description: 'Asked 5 questions',
+                xpReward: 100,
+                condition: () => userStats.questionsAsked >= 5
+            },
+            explorer: {
+                id: 'explorer',
+                icon: '🗺️',
+                name: 'Explorer',
+                description: 'Explored 3 different topics',
+                xpReward: 150,
+                condition: () => userStats.topicsExplored.size >= 3
+            },
+            knowledgeSeeker: {
+                id: 'knowledgeSeeker',
+                icon: '📚',
+                name: 'Knowledge Seeker',
+                description: 'Asked 10 questions',
+                xpReward: 200,
+                condition: () => userStats.questionsAsked >= 10
+            },
+            healthyHabits: {
+                id: 'healthyHabits',
+                icon: '🦷',
+                name: 'Healthy Habits',
+                description: 'Learned about prevention',
+                xpReward: 75,
+                condition: () => userStats.topicsExplored.has('prevention')
+            },
+            symptomDetective: {
+                id: 'symptomDetective',
+                icon: '🔍',
+                name: 'Symptom Detective',
+                description: 'Asked about symptoms',
+                xpReward: 100,
+                condition: () => userStats.topicsExplored.has('symptoms') || userStats.topicsExplored.has('toothache') || userStats.topicsExplored.has('gumProblems')
+            },
+            brushMaster: {
+                id: 'brushMaster',
+                icon: '🪥',
+                name: 'Brush Master',
+                description: 'Learned proper brushing technique',
+                xpReward: 125,
+                condition: () => userStats.topicsExplored.has('brushing')
+            },
+            conversationalist: {
+                id: 'conversationalist',
+                icon: '💬',
+                name: 'Conversationalist',
+                description: 'Had 3 chat sessions',
+                xpReward: 150,
+                condition: () => userStats.chatSessions >= 3
+            },
+            scholarAchieved: {
+                id: 'scholar',
+                icon: '🎓',
+                name: 'Scholar',
+                description: 'Reached Level 3',
+                xpReward: 300,
+                condition: () => userStats.level >= 3
+            },
+            masterLearner: {
+                id: 'masterLearner',
+                icon: '🏆',
+                name: 'Master Learner',
+                description: 'Unlocked all basic badges',
+                xpReward: 500,
+                condition: () => {
+                    const basicBadges = ['firstSteps', 'curious', 'explorer', 'healthyHabits', 'symptomDetective', 'brushMaster'];
+                    return basicBadges.every(badge => userStats.badges.has(badge));
+                }
+            }
+        };
+
+        // XP thresholds for each level
+        const levelThresholds = [0, 100, 300, 600, 1000, 1500, 2200, 3000, 4000, 5200];
+
+        function initializeGamification() {
+            // Load saved progress (in a real app, this would be from localStorage or server)
+            // For demo purposes, we start fresh each session but show the system
+            renderBadges();
+            updateLevelDisplay();
+            document.getElementById('badgeContainer').style.display = 'block';
+        }
+
+        function addXP(amount, source = 'interaction') {
+            const oldLevel = userStats.level;
+            userStats.xp += amount;
+            
+            // Check for level up
+            const newLevel = calculateLevel(userStats.xp);
+            if (newLevel > oldLevel) {
+                userStats.level = newLevel;
+                showLevelUpNotification(newLevel);
+            }
+            
+            updateLevelDisplay();
+            checkAndAwardBadges();
+        }
+
+        function calculateLevel(xp) {
+            for (let i = levelThresholds.length - 1; i >= 0; i--) {
+                if (xp >= levelThresholds[i]) {
+                    return i + 1;
+                }
+            }
+            return 1;
+        }
+
+        function updateLevelDisplay() {
+            const currentLevelXP = levelThresholds[userStats.level - 1] || 0;
+            const nextLevelXP = levelThresholds[userStats.level] || levelThresholds[levelThresholds.length - 1];
+            const progressXP = userStats.xp - currentLevelXP;
+            const neededXP = nextLevelXP - currentLevelXP;
+            const progressPercent = Math.min((progressXP / neededXP) * 100, 100);
+
+            document.getElementById('levelBadge').textContent = `Level ${userStats.level}`;
+            document.getElementById('xpText').textContent = `${userStats.xp} / ${nextLevelXP} XP`;
+            document.getElementById('progressFill').style.width = `${progressPercent}%`;
+        }
+
+        function checkAndAwardBadges() {
+            Object.values(badges).forEach(badge => {
+                if (!userStats.badges.has(badge.id) && badge.condition()) {
+                    awardBadge(badge);
+                }
+            });
+        }
+
+        function awardBadge(badge) {
+            userStats.badges.add(badge.id);
+            addXP(badge.xpReward, 'badge');
+            showBadgeNotification(badge);
+            renderBadges();
+        }
+
+        function renderBadges() {
+            const badgesGrid = document.getElementById('badgesGrid');
+            badgesGrid.innerHTML = '';
+            
+            Object.values(badges).forEach(badge => {
+                const badgeElement = document.createElement('div');
+                const isEarned = userStats.badges.has(badge.id);
+                const isAvailable = badge.condition();
+                
+                badgeElement.className = `badge ${isEarned ? 'earned' : isAvailable ? 'available' : 'locked'}`;
+                badgeElement.title = badge.description;
+                
+                badgeElement.innerHTML = `
+                    <div class="badge-icon">${badge.icon}</div>
+                    <div class="badge-name">${badge.name}</div>
+                `;
+                
+                badgeElement.addEventListener('click', () => showBadgeDetails(badge));
+                badgesGrid.appendChild(badgeElement);
+            });
+        }
+
+        function showBadgeDetails(badge) {
+            const isEarned = userStats.badges.has(badge.id);
+            const status = isEarned ? 'Earned!' : badge.condition() ? 'Available' : 'Locked';
+            alert(`${badge.icon} ${badge.name}\n\n${badge.description}\n\nReward: ${badge.xpReward} XP\nStatus: ${status}`);
+        }
+
+        function showBadgeNotification(badge) {
+            const toast = document.getElementById('badgeToast');
+            const icon = document.getElementById('toastIcon');
+            const title = document.getElementById('toastTitle');
+            const description = document.getElementById('toastDescription');
+            
+            icon.textContent = badge.icon;
+            title.textContent = 'Achievement Unlocked!';
+            description.textContent = `${badge.name} - +${badge.xpReward} XP`;
+            
+            toast.style.display = 'block';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 4000);
+        }
+
+        function showLevelUpNotification(level) {
+            const toast = document.getElementById('badgeToast');
+            const icon = document.getElementById('toastIcon');
+            const title = document.getElementById('toastTitle');
+            const description = document.getElementById('toastDescription');
+            
+            icon.textContent = '🎉';
+            title.textContent = 'Level Up!';
+            description.textContent = `Welcome to Level ${level}!`;
+            
+            toast.style.display = 'block';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 4000);
+        }
+
+        function trackInteraction(type, topic = null) {
+            switch(type) {
+                case 'question':
+                    userStats.questionsAsked++;
+                    addXP(25, 'question');
+                    break;
+                case 'topic':
+                    if (topic) {
+                        userStats.topicsExplored.add(topic);
+                        addXP(15, 'exploration');
+                    }
+                    break;
+                case 'session':
+                    userStats.chatSessions++;
+                    addXP(10, 'engagement');
+                    break;
+            }
+            checkAndAwardBadges();
+        }
         
 // REPLACE your entire knowledgeBase object and findBestResponse function with this:
 
@@ -1251,13 +1733,29 @@ function findBestResponse(userInput, userAge = 'teen') {
         function resetChat() {
             userAge = null;
             currentStep = 'age';
+            
+            // Reset gamification (in a real app, you'd preserve progress)
+            userStats = {
+                xp: 0,
+                level: 1,
+                badges: new Set(),
+                questionsAsked: 0,
+                topicsExplored: new Set(),
+                chatSessions: 0,
+                streakDays: 1
+            };
+            
             document.getElementById('ageInput').value = '';
+            document.getElementById('badgeContainer').style.display = 'none';
             
             const messagesContainer = document.getElementById('chatMessages');
-            const firstMessage = messagesContainer.children[0];
+            const firstMessage = messagesContainer.children[0]; // badge container
+            const secondMessage = messagesContainer.children[1]; // initial message
+            const thirdMessage = messagesContainer.children[2]; // typing indicator
             messagesContainer.innerHTML = '';
             messagesContainer.appendChild(firstMessage);
-            messagesContainer.appendChild(document.getElementById('typingIndicator'));
+            messagesContainer.appendChild(secondMessage);
+            messagesContainer.appendChild(thirdMessage);
         }
 
 function setAge() {
@@ -1274,10 +1772,14 @@ function setAge() {
 
         addUserMessage(`I'm ${age} years old!`);
 
+        // Initialize gamification system
         setTimeout(() => {
+            initializeGamification();
+            trackInteraction('session');
+            
             const greeting = age >= 15
-                ? `Awesome! Since you're ${age}, I'll keep things real with you. What would you like to know about oral health?`
-                : `Cool! Since you're ${age}, I'll explain things in a way that's perfect for you. What do you want to learn about your teeth?`;
+                ? `Awesome! Since you're ${age}, I'll keep things real with you. I've set up your achievement tracker above - you can earn badges and XP as you learn! What would you like to know about oral health?`
+                : `Cool! Since you're ${age}, I'll explain things in a way that's perfect for you. See those badges above? You can earn them as you learn about your teeth! What do you want to learn first?`;
 
             addBotMessage(greeting, getMainMenuOptions());
         }, 1000);
@@ -1347,6 +1849,9 @@ function setAge() {
             }
 
             addUserMessage(text);
+            
+            // Track the interaction for gamification
+            trackInteraction('topic', action);
             
             setTimeout(() => {
                 const ageGroup = userAge >= 15 ? 'teen' : 'younger';
@@ -1444,6 +1949,23 @@ function setAge() {
             }
             
             addUserMessage(question);
+            
+            // Track the question for gamification
+            trackInteraction('question');
+            
+            // Identify what topic this question relates to for badge tracking
+            const questionLower = question.toLowerCase();
+            if (questionLower.includes('brush') || questionLower.includes('toothbrush')) {
+                trackInteraction('topic', 'brushing');
+            } else if (questionLower.includes('hurt') || questionLower.includes('pain') || questionLower.includes('ache')) {
+                trackInteraction('topic', 'toothache');
+            } else if (questionLower.includes('gum') || questionLower.includes('bleed')) {
+                trackInteraction('topic', 'gumProblems');
+            } else if (questionLower.includes('prevent') || questionLower.includes('avoid') || questionLower.includes('stop')) {
+                trackInteraction('topic', 'prevention');
+            } else if (questionLower.includes('sensitive') || questionLower.includes('cold') || questionLower.includes('hot')) {
+                trackInteraction('topic', 'sensitivity');
+            }
             
             setTimeout(() => {
                 const response = generateCustomResponse(question);
