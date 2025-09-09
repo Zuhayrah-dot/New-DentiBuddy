@@ -1946,6 +1946,7 @@ function setAge() {
             if (!question) {
                 alert('Please enter a question!');
                 return;
+                document.getElementById('customQuestionInput').value = '';
             }
             
             addUserMessage(question);
